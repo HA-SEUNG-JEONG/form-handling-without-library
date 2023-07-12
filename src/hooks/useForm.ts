@@ -22,10 +22,11 @@ type Validations<T> = Partial<Record<keyof T, Validation>>;
 const useForm = <T>(option?: {
   validations?: Validations<T>;
   initialValue?: Partial<T>;
-  onSubmit: () => void;
+  onSubmit?: () => void;
 }) => {
   const [data, setData] = useState((option?.initialValue || {}) as T);
   const [errors, setErrors] = useState<Errors<T>>({});
+  const isSubmitting = false;
 
   const handleChange =
     (key: keyof T) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -73,11 +74,14 @@ const useForm = <T>(option?: {
 
         setErrors({});
 
-        if (option?.onSubmit) option.onSubmit();
+        if (!isSubmitting) {
+          alert("제출되었습니다!");
+          return;
+        }
       }
     }
   };
-  return { data, errors, handleChange, handleSubmit };
+  return { data, errors, handleChange, handleSubmit, isSubmitting };
 };
 
 export default useForm;
