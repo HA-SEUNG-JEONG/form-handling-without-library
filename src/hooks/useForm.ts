@@ -52,14 +52,14 @@ const useForm = <T>(option?: {
 
         const pattern = validation?.pattern;
 
-        if (pattern?.value && isValidString(value)) {
+        if (pattern?.value && !isValidString(value)) {
           valid = false;
           newErrors[key] = pattern.message;
         }
 
         const custom = validation?.custom;
 
-        if (custom?.isValid && isValidString(value)) {
+        if (custom?.isValid && !isValidString(value)) {
           valid = false;
           newErrors[key] = custom.message;
         }
