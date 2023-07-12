@@ -18,31 +18,28 @@ const Registration = () => {
       name: {
         pattern: {
           value: /^[A-Za-z]+$/,
-          message:
-            "You're not allowed to use special characters or numbers in your name.",
+          message: "이름에 특수문자는 허용되지 않습니다.",
         },
       },
       age: {
         custom: {
           isValid: (value) => Number(value) > 17,
-          message: "You have to be at least 18 years old.",
+          message: "나이는 17보다 커야 합니다.",
         },
       },
       password: {
         custom: {
           isValid: (value) => value.length > 6,
-          message: "The password needs to be at least 6 characters long.",
+          message: "비밀번호는 6자 이상이어야 합니다.",
         },
       },
       email: {
         pattern: {
           value: /^[A-Za-z0-9]+@[a-z]+\.[a-z]{2,3}$/,
-          message:
-            "You're not allowed to use special characters or numbers in your email.",
+          message: "유효한 이메일을 입력해주세요.",
         },
       },
     },
-    onSubmit: () => alert("User submitted!"),
   });
 
   const register = (key: keyof User) => ({
