@@ -17,7 +17,7 @@ const Registration = () => {
     validations: {
       name: {
         pattern: {
-          value: "^[A-Za-z]*$",
+          value: /^[A-Za-z]+$/,
           message:
             "You're not allowed to use special characters or numbers in your name.",
         },
@@ -38,36 +38,22 @@ const Registration = () => {
     onSubmit: () => alert("User submitted!"),
   });
 
+  const register = (key: keyof User) => ({
+    name: key,
+    value: user[key] || "",
+    onChange: handleChange(key),
+  });
+
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        placeholder="Name"
-        type="text"
-        name="name"
-        value={user.name}
-        onChange={handleChange("name")}
-      />
+      <input placeholder="Name" type="text" {...register("name")} />
       {errors.name && <p>{errors.name}</p>}
-      <input
-        placeholder="age"
-        type="number"
-        name="age"
-        value={user.age}
-        onChange={handleChange("age")}
-      />
+      <input placeholder="age" type="number" {...register("age")} />
       {errors.age && <p>{errors.age}</p>}
-      <input
-        placeholder="Email"
-        type="email"
-        value={user.email || ""}
-        onChange={handleChange("email")}
-      />
-      <input
-        placeholder="Password"
-        type="password"
-        value={user.password || ""}
-        onChange={handleChange("password")}
-      />{" "}
+      <input placeholder="Email" type="email" {...register("email")} />
+      {errors.email && <p>{errors.email}</p>}
+      <input placeholder="Password" type="password" {...register("password")} />
+      {errors.password && <p>{errors.password}</p>}
       <button type="submit">Submit</button>
     </form>
   );

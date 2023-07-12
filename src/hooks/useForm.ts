@@ -6,7 +6,7 @@ interface Validation {
     message: string;
   };
   pattern?: {
-    value: string;
+    value: RegExp;
     message: string;
   };
   custom?: {
@@ -52,16 +52,18 @@ const useForm = <T>(option?: {
 
         const pattern = validation?.pattern;
 
-        if (pattern?.value && !isValidString(value)) {
+        if (pattern?.value && !pattern.value.test(value as string)) {
           valid = false;
           newErrors[key] = pattern.message;
         }
-
         const custom = validation?.custom;
 
-        if (custom?.isValid && !isValidString(value)) {
+        if (
+          custom?.isValid &&
+          (!isValidString(value) || !custom?.isValid(value as string))
+        ) {
           valid = false;
-          newErrors[key] = custom.message;
+          newErrors[key] = custom?.message;
         }
 
         if (!valid) {
