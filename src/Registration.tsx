@@ -34,6 +34,13 @@ const Registration = () => {
           message: "The password needs to be at least 6 characters long.",
         },
       },
+      email: {
+        pattern: {
+          value: /^[A-Za-z0-9]+@[a-z]+\.[a-z]{2,3}$/,
+          message:
+            "You're not allowed to use special characters or numbers in your email.",
+        },
+      },
     },
     onSubmit: () => alert("User submitted!"),
   });
