@@ -30,7 +30,7 @@ const useForm = <T>(option?: {
 
   const handleChange =
     (key: keyof T) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setData({ ...data, [key]: event.target.value });
+      setData((prevData) => ({ ...prevData, [key]: event.target.value }));
     };
 
   const isValidString = (value: unknown) => typeof value === "string";
@@ -46,16 +46,19 @@ const useForm = <T>(option?: {
         const value = data[key];
         const validation = validationOption[key];
 
+        const setValidationError = (key: string, message: string) =>
+          setErrors((prevErrors) => ({ ...prevErrors, [key]: message }));
+
         if (validation?.required?.value && !value) {
-          valid = false;
-          newErrors[key] = validation?.required?.message;
+          setValidationError(key, validation?.required?.message);
+          return;
         }
 
         const pattern = validation?.pattern;
 
-        if (pattern?.value && !pattern.value.test(value as string)) {
-          valid = false;
-          newErrors[key] = pattern.message;
+        if (pattern?.value && !pattern?.value?.test(value as string)) {
+          setValidationError(key, pattern?.message);
+          return;
         }
         const custom = validation?.custom;
 
@@ -63,8 +66,8 @@ const useForm = <T>(option?: {
           custom?.isValid &&
           (!isValidString(value) || !custom?.isValid(value as string))
         ) {
-          valid = false;
-          newErrors[key] = custom?.message;
+          setValidationError(key, custom?.message);
+          return;
         }
 
         if (!valid) {
