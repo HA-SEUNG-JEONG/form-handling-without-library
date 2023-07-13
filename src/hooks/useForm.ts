@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { useState } from "react";
 
 interface Validation {
   required?: {
@@ -29,13 +29,13 @@ const useForm = <T>(option?: {
   const isSubmitting = false;
 
   const handleChange =
-    (key: keyof T) => (event: ChangeEvent<HTMLInputElement>) => {
+    (key: keyof T) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setData({ ...data, [key]: event.target.value });
     };
 
   const isValidString = (value: unknown) => typeof value === "string";
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const validationOption = option?.validations;
 
