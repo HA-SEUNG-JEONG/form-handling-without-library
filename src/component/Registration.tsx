@@ -1,5 +1,7 @@
 import useForm from "../hooks/useForm";
 
+import { useEffect, useState } from "react";
+
 interface User {
   name: string;
   age: number;
@@ -42,11 +44,18 @@ const Registration = () => {
     },
   });
 
+  const [isValid, setIsValid] = useState(false);
+
   const register = (key: keyof User) => ({
     name: key,
     value: user[key] || "",
     onChange: handleChange(key),
   });
+
+  useEffect(() => {
+    const isFormEmpty = Object.values(user).every((value) => value === "");
+    isFormEmpty ? setIsValid(false) : setIsValid(true);
+  }, [user]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -58,7 +67,9 @@ const Registration = () => {
       {errors.email && <p>{errors.email}</p>}
       <input placeholder="Password" type="password" {...register("password")} />
       {errors.password && <p>{errors.password}</p>}
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={!isValid}>
+        Submit
+      </button>
     </form>
   );
 };
