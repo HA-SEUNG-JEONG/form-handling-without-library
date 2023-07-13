@@ -84,7 +84,7 @@ const useForm = <T>(option?: {
       }
     }
   };
-  return { data, errors, handleChange, handleSubmit, isSubmitting };
+  return { data, errors, handleChange, handleSubmit };
 };
 
 export default useForm;
