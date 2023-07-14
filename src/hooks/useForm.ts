@@ -40,8 +40,6 @@ const useForm = <T>(option?: {
     const validationOption = option?.validations;
 
     if (validationOption) {
-      let valid = true;
-      const newErrors: Errors<T> = {};
       for (const key in validationOption) {
         const value = data[key];
         const validation = validationOption[key];
@@ -67,11 +65,6 @@ const useForm = <T>(option?: {
           (!isValidString(value) || !custom?.isValid(value as string))
         ) {
           setValidationError(key, custom?.message);
-          return;
-        }
-
-        if (!valid) {
-          setErrors(newErrors);
           return;
         }
 
